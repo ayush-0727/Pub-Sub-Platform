@@ -6,17 +6,25 @@
 #define MAX_SUBSCRIBERS 10
 #define MAX_QUEUE_SIZE 50
 
-typedef enum { PUBLISH, SUBSCRIBE, PULL } MessageType;
+typedef enum { PUBLISH, SUBSCRIBE, PULL, AUTH, TOPIC_LIST } MessageType;
 
 typedef struct {
     MessageType type;
+    char action[10]; // "login" or "register"
+    char id[50];
+    char password[50];
     char topic[50];
     char data[MAX_DATA_LEN];
+    char user_type[10]; // "publisher" or "subscriber"
 } Message;
 
 // Define a structure for subscribers
 typedef struct {
-    int socket; // Socket descriptor for the subscriber
+    char id[50];
+    char password[50];
+    char topics[MAX_TOPICS][50]; // Topics the user is subscribed to
+    int topic_count;
+    int socket;
 } Subscriber;
 
 // Define a structure for a topic
